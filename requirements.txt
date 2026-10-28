@@ -1,0 +1,5 @@
+# Harness runtime deps. The core (models/db/ranker/differential_tester) is
+# stdlib-only; these are for the wiring:
+httpx>=0.27          # src/send_fn.py — the harness's live-HTTP backend
+# MCP server (src/mcp_server.py) is stdlib-only by design (http.server + SSE),
+# so no mcp SDK is required.

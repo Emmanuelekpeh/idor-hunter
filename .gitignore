@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# local databases / evidence artifacts produced while running
+*.db
+*.sqlite
+*.sqlite3
+evidence/
+*.log
+
+# agent scratch / memory logs
+memory/
+.kilo/
+kilo.json
+*.jsonl
+
+# env and secrets
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
