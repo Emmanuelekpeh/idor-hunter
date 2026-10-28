@@ -1,4 +1,4 @@
-"""Automated tests for the IDOR harness + wiring. Everything here runs against
+﻿"""Automated tests for the IDOR harness + wiring. Everything here runs against
 REAL round-trips: a local in-process HTTP target app, the real httpx send_fn,
 and the real SSE MCP server over localhost. No mocks of the seams under test.
 
@@ -68,7 +68,7 @@ class TargetHandler(BaseHTTPRequestHandler):
 
 class HarnessTestBase(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix="harness-test-")
+        self.tmp = tempfile.TemporaryDirectory(prefix="harness-test-", ignore_cleanup_errors=True)
         self.root = Path(self.tmp.name)
         # target app
         self.target = ThreadingHTTPServer(("127.0.0.1", 0), TargetHandler)
@@ -312,7 +312,9 @@ class TestMcpServerOverTheWire(HarnessTestBase):
         # seed ground truth, then run the model's whole loop over the wire
         eid, subj_a, subj_b, obj = self.seed()
         r = c.call("list_candidate_endpoints", {})
-        self.assertEqual(json.loads(r["result"]["content"][0]["text"]), [])
+        cands = json.loads(r["result"]["content"][0]["text"])
+        self.assertEqual(len(cands), 1)
+        self.assertEqual(cands[0]["path_template"], "/api/invoices/{id}")
         r = c.call("get_known_auth_facts", {"subject_id": subj_a, "object_id": obj})
         facts = json.loads(r["result"]["content"][0]["text"])
         self.assertEqual(facts[0]["expected"], "denied")
